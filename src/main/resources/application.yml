@@ -1,0 +1,8 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/moroccan_cars
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Passeword1
