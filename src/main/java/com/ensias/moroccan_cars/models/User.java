@@ -3,9 +3,16 @@ package com.ensias.moroccan_cars.models;
 import lombok.AllArgsConstructor;
 
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 
 @Data
@@ -13,7 +20,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements UserDetails {
     public User(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +43,34 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "user_authority")
     private Authorities authority;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(authority.getName()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
