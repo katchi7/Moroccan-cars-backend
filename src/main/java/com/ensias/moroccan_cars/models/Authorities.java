@@ -11,7 +11,12 @@ import javax.persistence.*;
 public class Authorities {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "authority_id")
     private int id;
     @Column(name = "authority_name")
     private String name;
+
+    public String getName() {
+        return name;
+    }
 }

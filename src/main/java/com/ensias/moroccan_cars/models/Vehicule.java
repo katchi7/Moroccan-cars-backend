@@ -18,6 +18,7 @@ public class Vehicule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vehicule_id")
     private int id;
 
     @Column(name = "vehicule_owner")

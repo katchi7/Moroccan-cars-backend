@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "image_id")
     private int id;
     @Column(name = "image_description")
     private String description;

@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "status_id")
     private int id;
     @Column(name = "status_name")
     private String name;

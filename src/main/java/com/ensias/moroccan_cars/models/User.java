@@ -1,13 +1,12 @@
 package com.ensias.moroccan_cars.models;
 
-import jdk.dynalink.linker.LinkerServices;
 import lombok.AllArgsConstructor;
-import lombok.CustomLog;
+
 import lombok.Data;
-import org.w3c.dom.stylesheets.LinkStyle;
+
 
 import javax.persistence.*;
-import java.util.List;
+
 
 @Data
 @AllArgsConstructor
@@ -34,8 +33,7 @@ public class User {
     private String image;
     @Column(name = "user_password")
     private String password;
-
-    @ManyToOne(targetEntity = Authorities.class)
+    @ManyToOne
     @JoinColumn(name = "user_authority")
     private Authorities authority;
 }

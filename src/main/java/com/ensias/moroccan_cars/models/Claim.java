@@ -11,6 +11,7 @@ import java.util.Date;
 public class Claim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "claim_id")
     private int id;
     @Column(name = "claim_subject")
     private String subject;
