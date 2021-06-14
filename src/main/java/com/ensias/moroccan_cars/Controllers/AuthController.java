@@ -26,7 +26,7 @@ import java.util.Map;
 public class AuthController {
 
     @Value("${jwt.hdr}")
-    public static String TOKEN_HEADER;
+    public String TOKEN_HEADER;
 
     public final Logger logger;
     public final UserService userService;
@@ -65,10 +65,10 @@ public class AuthController {
         }
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getEmail(),userDto.getPassword()));
-
             userDto = new UserDto(userService.findUserByEmail(userDto.getEmail()));
-            ResponseEntity<UserDto> response = ResponseEntity.ok().header(TOKEN_HEADER,jwtUtil.generateToken(userDto.getEmail())).body(userDto);
-            return response;
+            return ResponseEntity.ok().header(TOKEN_HEADER,jwtUtil.generateToken(userDto.getEmail())).body(userDto);
+
+
         }catch (org.springframework.security.core.AuthenticationException e){
             return new ResponseEntity<>(userDto, HttpStatus.NOT_FOUND);
         }

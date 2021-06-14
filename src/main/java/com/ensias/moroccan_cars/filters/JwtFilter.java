@@ -3,6 +3,8 @@ package com.ensias.moroccan_cars.filters;
 import com.ensias.moroccan_cars.config.JwtUtil;
 import com.ensias.moroccan_cars.models.User;
 import com.ensias.moroccan_cars.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
+
         String authorizationHeader = httpServletRequest.getHeader(header);
 
         String token = null;
@@ -43,7 +46,10 @@ public class JwtFilter extends OncePerRequestFilter {
             userName = jwtUtil.extractUsername(token);
         }
 
-        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+        if (userName != null && (SecurityContextHolder.getContext() == null ||  SecurityContextHolder.getContext().getAuthentication() == null)) {
+
+
 
             UserDetails userDetails = service.loadUserByUsername(userName);
 
@@ -56,7 +62,11 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 httpServletResponse.setHeader(header,token);
             }
+
         }
+
+
+
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

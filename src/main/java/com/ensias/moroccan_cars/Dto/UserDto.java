@@ -22,10 +22,10 @@ public class UserDto extends RepresentationModel<UserDto> {
         this.authorities = user.getAuthority();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
-        this.adr = user.getAdr();
+        this.adresse = user.getAdr();
         this.email = user.getEmail();
         this.image = user.getImage();
-        this.num = user.getNum();
+        this.numTel = user.getNum();
     }
 
     @NotNull
@@ -39,8 +39,8 @@ public class UserDto extends RepresentationModel<UserDto> {
     @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$" )
     private String email;
 
-    private String adr;
-    private String num;
+    private String adresse;
+    private String numTel;
     private String image;
     @NotNull
     @Size(min = 8)
@@ -51,7 +51,7 @@ public class UserDto extends RepresentationModel<UserDto> {
     public User User(){
         authorities = new Authorities();
         authorities.setId(1);
-        User user = new User(0,firstName,lastName,email,adr,num,image,password,authorities);
+        User user = new User(0,firstName,lastName,email,adresse,numTel,image,password,authorities);
         return user;
     }
 }
