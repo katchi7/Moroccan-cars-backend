@@ -4,6 +4,7 @@ import com.ensias.moroccan_cars.filters.JwtFilter;
 import com.ensias.moroccan_cars.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -37,6 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final BCryptPasswordEncoder encoder;
     private final JwtFilter jwtFilter;
+    @Value("${jwt.hdr}")
+    private String header;
 
     public SecurityConfig(UserService userService, BCryptPasswordEncoder encoder, JwtFilter jwtFilter) {
         this.userService = userService;
@@ -87,6 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedOrigin("*");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
+        configuration.addExposedHeader(header);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
