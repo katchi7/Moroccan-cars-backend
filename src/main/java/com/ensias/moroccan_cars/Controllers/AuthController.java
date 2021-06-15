@@ -40,7 +40,6 @@ public class AuthController {
         this.logger = LoggerFactory.getLogger(getClass().getName());
     }
 
-    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/user",method = RequestMethod.POST,consumes = "application/json",produces = "application/json")
     public HttpEntity<UserDto> createUser(@Valid @RequestBody UserDto user, Errors errors){
 
@@ -53,14 +52,12 @@ public class AuthController {
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "*")
     @GetMapping("/user")
     public HttpEntity<UserDto> getUser(){
 
         return ResponseEntity.ok().body(new UserDto(userService.getCurrentUser()));
     }
 
-    @CrossOrigin(origins = "*")
     @PostMapping(value = "/login")
     public HttpEntity<UserDto> login(@Valid @RequestBody UserDto userDto,Errors errors){
         if(errors.hasFieldErrors("email") || errors.hasFieldErrors("password")) {
@@ -77,4 +74,5 @@ public class AuthController {
         }
 
     }
+
 }

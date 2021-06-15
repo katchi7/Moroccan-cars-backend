@@ -33,7 +33,6 @@ public class UserService implements UserDetailsService {
 
     public User findUserByEmail(String string){
         return userRepository.findUserByEmail(string);
-
     }
 
     @Override

@@ -10,6 +10,9 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -24,7 +27,7 @@ public class UserDto extends RepresentationModel<UserDto> {
         this.lastName = user.getLastName();
         this.adresse = user.getAdr();
         this.email = user.getEmail();
-        this.image = user.getImage();
+        this.dateNaissance = user.getBirth();
         this.numTel = user.getNum();
     }
 
@@ -41,17 +44,21 @@ public class UserDto extends RepresentationModel<UserDto> {
 
     private String adresse;
     private String numTel;
-    private String image;
+    private Date dateNaissance;
     @NotNull
     @Size(min = 8)
     private String password;
 
     private Authorities authorities;
 
+    public void setDateNaissance(String dateNaissance) throws ParseException {
+        this.dateNaissance = new SimpleDateFormat("dd/MM/yyyy").parse(dateNaissance);
+    }
+
     public User User(){
         authorities = new Authorities();
         authorities.setId(1);
-        User user = new User(0,firstName,lastName,email,adresse,numTel,image,password,authorities);
+        User user = new User(0,firstName,lastName,email,adresse,numTel,dateNaissance,password,authorities);
         return user;
     }
 }

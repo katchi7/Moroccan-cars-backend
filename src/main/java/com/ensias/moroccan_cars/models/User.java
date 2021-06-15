@@ -13,6 +13,7 @@ import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 
 
 @Data
@@ -36,8 +37,8 @@ public class User implements UserDetails {
     private String adr;
     @Column(name = "user_num")
     private String num;
-    @Column(name = "user_image")
-    private String image;
+    @Column(name = "user_birth")
+    private Date birth;
     @Column(name = "user_password")
     private String password;
     @ManyToOne
