@@ -52,12 +52,14 @@ public class UserDto extends RepresentationModel<UserDto> {
     private Authorities authorities;
 
     public void setDateNaissance(String dateNaissance) throws ParseException {
-        this.dateNaissance = new SimpleDateFormat("dd/MM/yyyy").parse(dateNaissance);
+        this.dateNaissance = new SimpleDateFormat("yyyy-MM-dd").parse(dateNaissance);
     }
 
     public User User(){
-        authorities = new Authorities();
-        authorities.setId(1);
+        if(authorities == null){
+            authorities = new Authorities();
+            authorities.setId(1);
+        }
         User user = new User(0,firstName,lastName,email,adresse,numTel,dateNaissance,password,authorities);
         return user;
     }

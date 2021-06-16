@@ -1,8 +1,10 @@
 package com.ensias.moroccan_cars.services;
 
+import com.ensias.moroccan_cars.Dto.UserDto;
 import com.ensias.moroccan_cars.models.User;
 import com.ensias.moroccan_cars.repositories.AuthoritiesRepository;
 import com.ensias.moroccan_cars.repositories.UserRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-
+import java.util.List;
+import java.util.Optional;
+@Log4j2
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
@@ -49,5 +53,21 @@ public class UserService implements UserDetailsService {
             u = userRepository.findUserByEmail(((UserDetails) o).getUsername());
         }
         return u;
+    }
+
+    public User getUserById(int id){
+        User user = null;
+        Optional<User> userop =  userRepository.findById(id);
+        if(userop.isPresent()){
+            user = userop.get();
+        }
+        return user;
+    }
+
+    public List<User> findUsers(User u){
+        int authority = 0;
+        if(u.getAuthority() != null) authority = u.getAuthority().getId();
+        log.info("Authority id : " + authority);
+        return userRepository.findUsersByValues(u.getFirstName(),u.getLastName(),u.getEmail(),authority);
     }
 }
