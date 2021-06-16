@@ -55,6 +55,10 @@ public class UserDto extends RepresentationModel<UserDto> {
         this.dateNaissance = new SimpleDateFormat("yyyy-MM-dd").parse(dateNaissance);
     }
 
+    public String getDateNaissance()  {
+            return new SimpleDateFormat("yyyy-MM-dd").format(dateNaissance);
+    }
+
     public User User(){
         if(authorities == null){
             authorities = new Authorities();
