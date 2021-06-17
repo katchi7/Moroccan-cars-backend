@@ -16,4 +16,6 @@ public class Image {
     private String description;
     @Column(name = "image_link")
     private String link;
+    @Column(name ="image_order")
+    private int order;
 }
