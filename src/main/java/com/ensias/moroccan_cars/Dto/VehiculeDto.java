@@ -45,9 +45,7 @@ public class VehiculeDto {
 
     private List<Image> images;
 
-    public float getPrice() {
-        return Float.parseFloat(String.format("%.2f",price));
-    }
+
 
     public Vehicule asVehicule(){
         return new Vehicule(id,owner,model,year,fuel,transmision,engine,power,seats,price,quantity,images);
