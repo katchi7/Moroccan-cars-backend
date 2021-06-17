@@ -1,16 +1,21 @@
 package com.ensias.moroccan_cars.Controllers;
 
 import com.ensias.moroccan_cars.Dto.VehiculeDto;
+import com.ensias.moroccan_cars.Dto.VehiculeFilter;
 import com.ensias.moroccan_cars.models.Vehicule;
 import com.ensias.moroccan_cars.services.VehiculeService;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/cars")
@@ -23,14 +28,51 @@ public class CarsController {
     }
 
     @GetMapping("")
-    public HttpEntity<List<VehiculeDto>> getVehicules(){
+    public HttpEntity<List<VehiculeDto>> getVehicules(@RequestBody(required = false) VehiculeFilter v){
 
-        List<VehiculeDto> vehiculeDtos = new ArrayList<>();
-        List<Vehicule> vehicules = vehiculeService.getAllVehicules();
-        for (Vehicule vehicule : vehicules) {
-            vehiculeDtos.add(new VehiculeDto(vehicule));
+        if(v==null){
+            List<VehiculeDto> vehiculeDtos = new ArrayList<>();
+            List<Vehicule> vehicules = vehiculeService.getAllVehicules();
+            for (Vehicule vehicule : vehicules) {
+                VehiculeDto vehiculeDto = new VehiculeDto(vehicule);
+                vehiculeDto.add(linkTo(methodOn(CarsController.class).getVehiculeById(vehiculeDto.getId())).withSelfRel());
+                vehiculeDtos.add(vehiculeDto);
+            }
+            return ResponseEntity.ok().body(vehiculeDtos);
         }
-        return ResponseEntity.ok().body(vehiculeDtos);
+        List<Vehicule> vehicules = vehiculeService.findByFilter(v);
+        List<VehiculeDto> vehiculeDtos = new ArrayList<>();
 
+        for (Vehicule vehicule : vehicules) {
+            VehiculeDto vehiculeDto = new VehiculeDto(vehicule);
+            vehiculeDto.add(linkTo(methodOn(CarsController.class).getVehiculeById(vehiculeDto.getId())).withSelfRel());
+            vehiculeDtos.add(vehiculeDto);
+        }
+        return ResponseEntity.ok(vehiculeDtos);
+    }
+    @GetMapping("/{id}")
+    public HttpEntity<VehiculeDto> getVehiculeById(@PathVariable("id") int vehicule_id){
+
+        Vehicule v = vehiculeService.findById(vehicule_id);
+        if(v == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(new VehiculeDto(v));
+    }
+    @GetMapping("/makes")
+    public HttpEntity<List<String>> getMakes(){
+        return ResponseEntity.ok(vehiculeService.findMakes());
+    }
+    @GetMapping("/transmisions")
+    public HttpEntity<List<String>> getTransmisions(){
+        return ResponseEntity.ok(vehiculeService.findTransmisions());
+    }
+    @GetMapping("/fuel")
+    public HttpEntity<List<String>> getfuel(){
+        return ResponseEntity.ok(vehiculeService.findFuel());
+    }
+
+    @PostMapping("")
+    public HttpEntity<VehiculeDto> createVehicule(@Valid VehiculeDto vehiculeDto, Errors errors){
+
+        return ResponseEntity.badRequest().build();
     }
 }

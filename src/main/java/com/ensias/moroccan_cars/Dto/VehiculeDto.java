@@ -6,15 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.hateoas.RepresentationModel;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 @Log4j2
 @AllArgsConstructor
 @NoArgsConstructor
-public class VehiculeDto {
+public class VehiculeDto extends RepresentationModel<VehiculeDto> {
 
     public VehiculeDto(Vehicule v){
         this(v.getId(),v.getOwner(),v.getModel(),v.getYear(),v.getFuel(),v.getTransmision(),v.getEngine(),v.getPower(),v.getSeats(),v.getPrice(),v.getQuantity(),v.getImages());
