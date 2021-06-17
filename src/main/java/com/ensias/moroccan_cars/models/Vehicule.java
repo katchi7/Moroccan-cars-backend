@@ -30,18 +30,27 @@ public class Vehicule {
     @Column(name = "vehicule_year")
     private String year;
 
+    @Column(name = "vehicule_fuel")
+    private String fuel;
+
+    @Column(name = "vehicule_transmision")
+    private String transmision;
+
+    @Column(name = "vehicule_engine")
+    private String engine;
+
+    @Column(name = "vehicule_power")
+    private String power;
+
+    @Column(name = "vehicule_seats")
+    private int seats;
+
     @Column(name = "vehicule_price")
     private float price;
-
-    @Column(name = "vehicule_description")
-    private String description;
 
     @Column(name = "vehicule_quantity")
     private int quantity;
 
-    @OneToOne(targetEntity = Image.class)
-    @JoinColumn(name = "vehicule_default_image")
-    private Image defaultImage;
 
     @OneToMany(targetEntity = Image.class)
     @JoinColumn(name = "image_vehicule")
