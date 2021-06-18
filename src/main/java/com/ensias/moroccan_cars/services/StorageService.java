@@ -20,7 +20,7 @@ import java.nio.file.StandardCopyOption;
 public class StorageService {
     @Value("${app.upload.dir:${user.home}}")
     public String uploadDir;
-    public String app_folder = "ensias_doc";
+    public String app_folder = "moroccan_cars";
     @Autowired
     ResourceLoader resourceLoader;
 

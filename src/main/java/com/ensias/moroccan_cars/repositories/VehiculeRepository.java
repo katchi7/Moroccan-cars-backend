@@ -33,6 +33,4 @@ public interface VehiculeRepository extends CrudRepository<Vehicule,Integer> {
                                 int maxSeats,
                                 int minYear,
                                 int maxYear);
-    @Query(nativeQuery = true,value = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'moroccan_cars' AND TABLE_NAME = 'image'")
-    Integer getImageAutoIncrementNextVal();
 }

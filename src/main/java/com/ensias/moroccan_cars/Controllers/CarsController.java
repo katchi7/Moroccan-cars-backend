@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,10 +101,11 @@ public class CarsController {
 
     @GetMapping("/images/{image_id}")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable("image_id") int image_id) {
+    public ResponseEntity<Resource> serveFile(@PathVariable("image_id") int image_id) throws IOException {
 
         Resource image  = vehiculeService.findImage(image_id);
-        return ResponseEntity.ok().header("X-Frame-Options","ALLOW-FROM").body(image);
+        String content_type = URLConnection.guessContentTypeFromStream(image.getInputStream());
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE,content_type).header("X-Frame-Options","ALLOW-FROM").body(image);
     }
 
     @PostMapping(value = "/{id}/images",consumes = {"multipart/form-data"})

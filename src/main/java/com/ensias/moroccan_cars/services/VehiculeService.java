@@ -88,11 +88,11 @@ public class VehiculeService {
             Vehicule v = vehiculeOp.get();
             int i=1;
             for (MultipartFile file : files) {
-                int next_id =  vehiculeRepository.getImageAutoIncrementNextVal();
-                storageService.store(file,""+next_id);
-                Image im = new Image(0,v.getOwner()+" "+v.getModel(),linkTo(methodOn(CarsController.class).serveFile(next_id)).withSelfRel().toString(),i,v);
 
-                log.info(im);
+                Image im = new Image(0,v.getOwner()+" "+v.getModel(),"".toString(),i,v);
+                im = imageRepository.save(im);
+                storageService.store(file,""+im.getId());
+                im.setLink(linkTo(methodOn(CarsController.class).serveFile(im.getId())).toString());
                 im = imageRepository.save(im);
                 i++;
                 return_images.add(im);

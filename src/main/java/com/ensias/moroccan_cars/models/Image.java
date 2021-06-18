@@ -1,5 +1,6 @@
 package com.ensias.moroccan_cars.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "image")
-public class Image extends RepresentationModel<Image> {
+public class Image{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
@@ -24,11 +25,18 @@ public class Image extends RepresentationModel<Image> {
     @Column(name ="image_order")
     private int order;
 
+    @JsonBackReference
     @ManyToOne(targetEntity = Vehicule.class)
     @JoinColumn(name = "image_vehicule")
     Vehicule vehicule;
 
-    public Vehicule getVehicule() {
-        return null;
+    @Override
+    public String toString() {
+        return "Image{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", link='" + link + '\'' +
+                ", order=" + order +
+                '}';
     }
 }
