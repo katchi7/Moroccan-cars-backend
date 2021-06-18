@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET,"/cars","/cars/*")
                 .permitAll()
                 .mvcMatchers(HttpMethod.POST,"/cars")
-                .access("hasAuthority('Responsable') and hasAuthority('Directeur')")
+                .access("hasAuthority('Responsable') or hasAuthority('Directeur')")
                 .antMatchers("/profile/login")
                 .permitAll()
                 .anyRequest()

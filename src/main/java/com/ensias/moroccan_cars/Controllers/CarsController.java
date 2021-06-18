@@ -4,6 +4,7 @@ import com.ensias.moroccan_cars.Dto.VehiculeDto;
 import com.ensias.moroccan_cars.Dto.VehiculeFilter;
 import com.ensias.moroccan_cars.models.Vehicule;
 import com.ensias.moroccan_cars.services.VehiculeService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@Log4j2
 @RestController
 @RequestMapping("/cars")
 public class CarsController {
@@ -71,8 +73,15 @@ public class CarsController {
     }
 
     @PostMapping("")
-    public HttpEntity<VehiculeDto> createVehicule(@Valid VehiculeDto vehiculeDto, Errors errors){
+    public HttpEntity<VehiculeDto> createVehicule(@Valid @RequestBody VehiculeDto vehiculeDto, Errors errors){
 
-        return ResponseEntity.badRequest().build();
+        if(errors.hasErrors()){
+            return ResponseEntity.badRequest().build();
+        }
+        vehiculeDto = new VehiculeDto(vehiculeService.save(vehiculeDto.asVehicule()));
+        vehiculeDto.add(linkTo(methodOn(CarsController.class).getVehiculeById(vehiculeDto.getId())).withSelfRel());
+        return ResponseEntity.ok(vehiculeDto);
+
+
     }
 }

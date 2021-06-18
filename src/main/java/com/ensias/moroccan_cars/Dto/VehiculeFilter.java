@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VehiculeFilter {
+
     private String owner;
 
     private String model;

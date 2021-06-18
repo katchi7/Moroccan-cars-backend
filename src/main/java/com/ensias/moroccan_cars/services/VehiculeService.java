@@ -52,4 +52,9 @@ public class VehiculeService {
         vehicules = vehiculeRepository.findByFilter(filter.getOwner(),filter.getModel(),filter.getFuel(),filter.getTransmision(),filter.getMinSeats(),filter.getMaxSeats(),minYears,maxYears);
         return  vehicules;
     }
+
+    public Vehicule save(Vehicule v){
+        v = vehiculeRepository.save(v);
+        return v;
+    }
 }
