@@ -3,7 +3,6 @@ package com.ensias.moroccan_cars.services;
 import com.ensias.moroccan_cars.models.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -17,18 +16,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-
 @Service
 public class StorageService {
     @Value("${app.upload.dir:${user.home}}")
     public String uploadDir;
-    public String app_folder = "moroccan_cars";
+    public String app_folder = "ensias_doc";
     @Autowired
     ResourceLoader resourceLoader;
 
     public void store(MultipartFile file,String name) throws IOException {
 
-
+        Files.createDirectories(Paths.get(uploadDir + File.separator +app_folder));
         try {
             Path copyLocation = Paths.get(uploadDir + File.separator +app_folder
                     + File.separator + StringUtils.cleanPath(name));
@@ -41,10 +39,13 @@ public class StorageService {
                     + ". Please try again!");
         }
     }
-    public Resource loadResource(int image_id){
+
+    public Resource loadResource(int id){
         Resource resource =   resourceLoader.getResource("file:" + Paths.get(uploadDir + File.separator +app_folder
-                + File.separator + StringUtils.cleanPath(image_id+"")));
+                + File.separator + StringUtils.cleanPath(id+"")));
 
         return resource ;
     }
 }
+
+

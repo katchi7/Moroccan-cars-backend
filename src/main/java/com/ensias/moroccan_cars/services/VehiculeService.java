@@ -4,14 +4,15 @@ import com.ensias.moroccan_cars.Controllers.CarsController;
 import com.ensias.moroccan_cars.Dto.VehiculeFilter;
 import com.ensias.moroccan_cars.models.Image;
 import com.ensias.moroccan_cars.models.Vehicule;
+import com.ensias.moroccan_cars.repositories.ImageRepository;
 import com.ensias.moroccan_cars.repositories.VehiculeRepository;
 import lombok.extern.log4j.Log4j2;
-import org.aspectj.bridge.IMessage;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,10 +25,12 @@ public class VehiculeService {
 
     public final VehiculeRepository vehiculeRepository;
     public final StorageService storageService;
+    private final ImageRepository imageRepository;
 
-    public VehiculeService(VehiculeRepository vehiculeRepository, StorageService storageService) {
+    public VehiculeService(VehiculeRepository vehiculeRepository, StorageService storageService, ImageRepository imageRepository) {
         this.vehiculeRepository = vehiculeRepository;
         this.storageService = storageService;
+        this.imageRepository = imageRepository;
     }
 
     public List<Vehicule> getAllVehicules(){
@@ -78,18 +81,25 @@ public class VehiculeService {
 
     public List<Image> saveImages(List<MultipartFile> files, int id) throws IOException {
         Optional<Vehicule> vehiculeOp = vehiculeRepository.findById(id);
+        ArrayList<Image> return_images = null;
+        log.info(files.size());
         if(vehiculeOp.isPresent()){
+            return_images = new ArrayList<>();
             Vehicule v = vehiculeOp.get();
             int i=1;
             for (MultipartFile file : files) {
                 int next_id =  vehiculeRepository.getImageAutoIncrementNextVal();
                 storageService.store(file,""+next_id);
                 Image im = new Image(0,v.getOwner()+" "+v.getModel(),linkTo(methodOn(CarsController.class).serveFile(next_id)).withSelfRel().toString(),i,v);
+
+                log.info(im);
+                im = imageRepository.save(im);
                 i++;
+                return_images.add(im);
             }
         }
 
-        return null;
+        return return_images;
     }
 
     public Resource findImage(int image_id){

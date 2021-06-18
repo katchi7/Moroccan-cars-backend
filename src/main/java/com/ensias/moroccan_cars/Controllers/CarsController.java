@@ -115,7 +115,9 @@ public class CarsController {
         for (MultipartFile file : files) {
             if(isImage(file)) filteredFiles.add(file);
         }
+        log.info(filteredFiles.size());
         List<Image> images = vehiculeService.saveImages(filteredFiles,vehicule_id);
+        if(images == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(images);
     }
 

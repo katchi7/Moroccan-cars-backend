@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .mvcMatchers(HttpMethod.POST,"/profile/user")
                 .permitAll()
-                .mvcMatchers(HttpMethod.GET,"/cars","/cars/*")
+                .mvcMatchers(HttpMethod.GET,"/cars","/cars/**")
                 .permitAll()
                 .mvcMatchers(HttpMethod.POST,"/cars")
                 .access("hasAuthority('Responsable') or hasAuthority('Directeur')")
