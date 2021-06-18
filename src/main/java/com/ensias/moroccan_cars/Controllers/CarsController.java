@@ -41,19 +41,22 @@ public class CarsController {
     }
 
     @GetMapping("")
-    public HttpEntity<List<VehiculeDto>> getVehicules(@RequestBody(required = false) VehiculeFilter v){
+    public HttpEntity<List<VehiculeDto>> getVehicules(){
 
-        if(v==null){
-            log.info("No body");
-            List<VehiculeDto> vehiculeDtos = new ArrayList<>();
-            List<Vehicule> vehicules = vehiculeService.getAllVehicules();
-            for (Vehicule vehicule : vehicules) {
-                VehiculeDto vehiculeDto = new VehiculeDto(vehicule);
-                vehiculeDto.add(linkTo(methodOn(CarsController.class).getVehiculeById(vehiculeDto.getId())).withSelfRel());
-                vehiculeDtos.add(vehiculeDto);
-            }
-            return ResponseEntity.ok().body(vehiculeDtos);
+        log.info("No body");
+        List<VehiculeDto> vehiculeDtos = new ArrayList<>();
+        List<Vehicule> vehicules = vehiculeService.getAllVehicules();
+        for (Vehicule vehicule : vehicules) {
+            VehiculeDto vehiculeDto = new VehiculeDto(vehicule);
+            vehiculeDto.add(linkTo(methodOn(CarsController.class).getVehiculeById(vehiculeDto.getId())).withSelfRel());
+            vehiculeDtos.add(vehiculeDto);
         }
+        return ResponseEntity.ok().body(vehiculeDtos);
+
+    }
+    @PostMapping("")
+    public HttpEntity<List<VehiculeDto>> filterVehicules(@RequestBody() VehiculeFilter v){
+
         List<Vehicule> vehicules = vehiculeService.findByFilter(v);
         List<VehiculeDto> vehiculeDtos = new ArrayList<>();
 
@@ -65,7 +68,10 @@ public class CarsController {
         }
         return ResponseEntity.ok(vehiculeDtos);
     }
+
+
     @GetMapping("/{id}")
+
     public HttpEntity<VehiculeDto> getVehiculeById(@PathVariable("id") int vehicule_id){
 
         Vehicule v = vehiculeService.findById(vehicule_id);
@@ -89,7 +95,7 @@ public class CarsController {
         return ResponseEntity.ok(vehiculeService.findSeats());
     }
 
-    @PostMapping("")
+    @PostMapping("create")
     public HttpEntity<VehiculeDto> createVehicule(@Valid @RequestBody VehiculeDto vehiculeDto, Errors errors){
 
         if(errors.hasErrors()){

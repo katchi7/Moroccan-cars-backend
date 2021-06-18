@@ -55,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET,"/cars","/cars/**")
                 .permitAll()
                 .mvcMatchers(HttpMethod.POST,"/cars")
+                .permitAll()
+                .mvcMatchers(HttpMethod.POST,"/cars/**")
                 .hasAuthority("Directeur")
                 .mvcMatchers(HttpMethod.DELETE,"/cars/**")
                 .hasAuthority("Directeur")
