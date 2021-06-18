@@ -16,6 +16,8 @@ public interface VehiculeRepository extends CrudRepository<Vehicule,Integer> {
     List<String> findAllTransmisions();
     @Query("SELECT distinct v.fuel from Vehicule as v")
     List<String> findAllFuel();
+    @Query("SELECT distinct v.seats from Vehicule as v")
+    List<Integer> findAllSeats();
 
 
     @Query("SELECT v from Vehicule as v WHERE (v.owner LIKE concat('%',?1,'%') or ?1 is null) and (v.model like concat('%',?2,'%') or ?2 is null) " +
@@ -31,4 +33,6 @@ public interface VehiculeRepository extends CrudRepository<Vehicule,Integer> {
                                 int maxSeats,
                                 int minYear,
                                 int maxYear);
+    @Query(nativeQuery = true,value = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'moroccan_cars' AND TABLE_NAME = 'image'")
+    Integer getImageAutoIncrementNextVal();
 }

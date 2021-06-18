@@ -1,13 +1,17 @@
 package com.ensias.moroccan_cars.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "image")
-public class Image {
+public class Image extends RepresentationModel<Image> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
@@ -18,4 +22,8 @@ public class Image {
     private String link;
     @Column(name ="image_order")
     private int order;
+
+    @ManyToOne(targetEntity = Vehicule.class)
+    @JoinColumn(name = "image_vehicule")
+    Vehicule vehicule;
 }
