@@ -3,6 +3,7 @@ package com.ensias.moroccan_cars.models;
 import jdk.dynalink.linker.LinkerServices;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -48,11 +49,12 @@ public class Vehicule {
     @Column(name = "vehicule_price")
     private float price;
 
+
     @Column(name = "vehicule_quantity")
     private int quantity;
 
 
-    @OneToMany(targetEntity = Image.class)
-    @JoinColumn(name = "image_vehicule")
+
+    @OneToMany(targetEntity = Image.class,mappedBy = "vehicule",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Image> images;
 }

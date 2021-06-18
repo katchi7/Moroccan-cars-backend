@@ -44,6 +44,7 @@ public class CarsController {
     public HttpEntity<List<VehiculeDto>> getVehicules(@RequestBody(required = false) VehiculeFilter v){
 
         if(v==null){
+            log.info("No body");
             List<VehiculeDto> vehiculeDtos = new ArrayList<>();
             List<Vehicule> vehicules = vehiculeService.getAllVehicules();
             for (Vehicule vehicule : vehicules) {
@@ -56,6 +57,7 @@ public class CarsController {
         List<Vehicule> vehicules = vehiculeService.findByFilter(v);
         List<VehiculeDto> vehiculeDtos = new ArrayList<>();
 
+        log.info("Body : " +v);
         for (Vehicule vehicule : vehicules) {
             VehiculeDto vehiculeDto = new VehiculeDto(vehicule);
             vehiculeDto.add(linkTo(methodOn(CarsController.class).getVehiculeById(vehiculeDto.getId())).withSelfRel());
@@ -96,7 +98,6 @@ public class CarsController {
         vehiculeDto = new VehiculeDto(vehiculeService.save(vehiculeDto.asVehicule()));
         vehiculeDto.add(linkTo(methodOn(CarsController.class).getVehiculeById(vehiculeDto.getId())).withSelfRel());
         return ResponseEntity.ok(vehiculeDto);
-
     }
 
     @GetMapping("/images/{image_id}")
@@ -122,6 +123,19 @@ public class CarsController {
         if(images == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(images);
     }
+
+
+
+
+    @DeleteMapping("/{id}")
+    public HttpEntity<VehiculeDto> deleteVehicule(@PathVariable("id") int id){
+
+        Vehicule v = vehiculeService.deleteVehicule(id);
+
+        if(v==null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(new VehiculeDto(v));
+    }
+
 
     private boolean isImage(MultipartFile file){
 

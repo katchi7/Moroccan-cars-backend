@@ -33,4 +33,8 @@ public interface VehiculeRepository extends CrudRepository<Vehicule,Integer> {
                                 int maxSeats,
                                 int minYear,
                                 int maxYear);
+
+    @Query(value = "DELETE FROM vehicule WHERE vehicule_id = ?1",nativeQuery = true)
+
+    void deleteById(int id);
 }

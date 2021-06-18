@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -101,7 +102,16 @@ public class VehiculeService {
 
         return return_images;
     }
-
+    public Vehicule deleteVehicule(int id){
+        try {
+            Vehicule v = vehiculeRepository.findById(id).get();
+            log.info("Here");
+            vehiculeRepository.delete(v);
+            return v;
+        }catch (NoSuchElementException ignore){
+            return null;
+        }
+    }
     public Resource findImage(int image_id){
         return storageService.loadResource(image_id);
     }

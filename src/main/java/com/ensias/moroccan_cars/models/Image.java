@@ -26,7 +26,7 @@ public class Image{
     private int order;
 
     @JsonBackReference
-    @ManyToOne(targetEntity = Vehicule.class)
+    @ManyToOne(targetEntity = Vehicule.class,cascade = CascadeType.REFRESH)
     @JoinColumn(name = "image_vehicule")
     Vehicule vehicule;
 
