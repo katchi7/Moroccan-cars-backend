@@ -24,8 +24,11 @@ public class Image extends RepresentationModel<Image> {
     @Column(name ="image_order")
     private int order;
 
-    @JsonIgnore
     @ManyToOne(targetEntity = Vehicule.class)
     @JoinColumn(name = "image_vehicule")
     Vehicule vehicule;
+
+    public Vehicule getVehicule() {
+        return null;
+    }
 }
