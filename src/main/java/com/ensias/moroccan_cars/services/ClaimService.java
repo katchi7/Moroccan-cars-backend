@@ -2,6 +2,7 @@ package com.ensias.moroccan_cars.services;
 
 import com.ensias.moroccan_cars.Dto.ClaimDto;
 import com.ensias.moroccan_cars.models.Claim;
+import com.ensias.moroccan_cars.models.User;
 import com.ensias.moroccan_cars.repositories.ClaimRepository;
 import lombok.Data;
 import lombok.SneakyThrows;
@@ -77,5 +78,56 @@ public class ClaimService {
         Claim claim = claimRepository.findById(claim_id).get();
         claim.setTreatmentDate(treatDate);
         claimRepository.save(claim);
+
+        if(treated){
+            final Date finalTreatDate = treatDate;
+            final  String userFullNale = claim.getUser().getFirstName()+" " +claim.getUser().getLastName();
+            final String claim_subject =  claim.getSubject();
+            final String user_email = ""+claim.getUser().getEmail();
+            new Thread(new Runnable() {
+                @SneakyThrows
+                @Override
+                public void run() {
+                    String text = "Hello <strong>Mr."+userFullNale+"</strong>";
+                    text+="<br/> <br/>";
+                    text += "Your claim <font color = green>\"" + claim_subject +"\"</font> is treated <br/> <br/>";
+                    text +="treatement date : " + finalTreatDate;
+                    emailService.sendSimpleEmail("Your claim \""+ claim_subject +"\" is treated",text,user_email);
+                }
+            }).start();
+
+        }
+    }
+    public Claim deleteClaim(int id) throws NoSuchElementException{
+        try{
+            Claim claim = claimRepository.findById(id).get();
+            claimRepository.delete(claim);
+            return claim;
+        }catch (NoSuchElementException e){
+            throw new NoSuchElementException("Claim not found");
+        }
+    }
+    public Claim deleteUserClaim(int id , User user) throws NoSuchElementException{
+        try{
+            Claim claim = claimRepository.findById(id).get();
+            if(claim.getUser().getId()!=user.getId())  throw new NoSuchElementException("Claim not found");
+            claimRepository.delete(claim);
+            return claim;
+        }catch (NoSuchElementException e){
+            throw new NoSuchElementException("Claim not found");
+        }
+    }
+    public List<Claim> findClaimsByUser(User user){
+        List<Claim> claims = claimRepository.findAllByUser(user.getId());
+        return claims;
+    }
+    public Claim findUserClaim(int claim_id,User user){
+        try{
+            Claim claim = claimRepository.findById(claim_id).get();
+            if(claim.getUser().getId()!=user.getId())  throw new NoSuchElementException("Claim not found");
+            return claim;
+        }catch (NoSuchElementException e){
+            throw new NoSuchElementException("Claim not found");
+        }
     }
 }

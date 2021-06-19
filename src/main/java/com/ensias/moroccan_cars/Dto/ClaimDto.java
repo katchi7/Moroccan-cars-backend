@@ -1,15 +1,10 @@
 package com.ensias.moroccan_cars.Dto;
 
 import com.ensias.moroccan_cars.models.Claim;
-import com.ensias.moroccan_cars.models.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.text.SimpleDateFormat;
