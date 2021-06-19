@@ -11,6 +11,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -120,6 +121,9 @@ public class CarsController {
 
         log.info("Vehicule : "+vehicule_id);
 
+        if(files == null ) throw new RequestRejectedException("Images not found");
+
+
         ArrayList<MultipartFile> filteredFiles = new ArrayList<>();
         for (MultipartFile file : files) {
             if(isImage(file)) filteredFiles.add(file);
@@ -160,4 +164,6 @@ public class CarsController {
     public HttpEntity<String> IOExceptionHandler(){
         return ResponseEntity.badRequest().body("Storage Error");
     }
+    @ExceptionHandler(RequestRejectedException.class)
+    public HttpEntity<String> RequestRejectedExceptionHandler(RequestRejectedException e){return ResponseEntity.badRequest().body(e.getMessage());}
 }
