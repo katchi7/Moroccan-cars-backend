@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -64,6 +65,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .access("hasAuthority('Directeur') or hasAuthority('Responsable')")
                 .mvcMatchers(HttpMethod.PUT,"/claim/*")
                 .access("hasAuthority('Directeur') or hasAuthority('Responsable')")
+                .mvcMatchers(HttpMethod.GET,"/rent/rent-requests")
+                .access("hasAuthority('Directeur') or hasAuthority('Responsable')")
+                .mvcMatchers(HttpMethod.PUT,"/rent/rent-requests/*")
+                .access("hasAuthority('Directeur') or hasAuthority('Responsable')")
+                .mvcMatchers(HttpMethod.GET,"/rent")
+                .access("hasAuthority('Directeur') or hasAuthority('Responsable')")
                 .mvcMatchers(HttpMethod.POST,"/cars/**")
                 .hasAuthority("Directeur")
                 .mvcMatchers(HttpMethod.DELETE,"/cars/**")
@@ -78,6 +85,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
                 Logger logger = LoggerFactory.getLogger(getClass().getName());
                 logger.error(e.getMessage());
+                httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
+                httpServletResponse.getOutputStream().print(e.getMessage());
+                httpServletResponse.getOutputStream().close();
             }
         })
                 .and().exceptionHandling().and().sessionManagement()

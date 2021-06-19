@@ -21,10 +21,10 @@ public class ClaimDto {
 
     private int id;
     @NotNull
-    @Size(min = 5)
+    @Size(min = 1)
     private String subject;
     @NotNull
-    @Size(min = 10)
+    @Size(min = 1)
     private String body;
     private Date date;
     private Date treatmentDate;
