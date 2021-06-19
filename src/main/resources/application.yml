@@ -11,6 +11,19 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: contact.moroccancars@gmail.com
+    password: MoroccanCars2021
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth : true
+
 jwt:
   secret: 7491aaebc384e55531426637360acc475594a998
   hdr: ACCESS_TOKEN
+

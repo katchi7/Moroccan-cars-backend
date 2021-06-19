@@ -1,5 +1,6 @@
 package com.ensias.moroccan_cars.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 
 import lombok.Data;
@@ -10,10 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 
 @Data
@@ -44,6 +42,9 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "user_authority")
     private Authorities authority;
+    @OneToMany(targetEntity = Claim.class,cascade = CascadeType.ALL,mappedBy = "user")
+    @JsonBackReference
+    private List<Claim> claims;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

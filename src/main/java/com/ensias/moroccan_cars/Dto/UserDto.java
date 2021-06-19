@@ -22,6 +22,7 @@ public class UserDto extends RepresentationModel<UserDto> {
     public UserDto(){}
 
     public UserDto(User user){
+        this.id = user.getId();
         this.authorities = user.getAuthority();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
@@ -30,6 +31,7 @@ public class UserDto extends RepresentationModel<UserDto> {
         this.dateNaissance = user.getBirth();
         this.numTel = user.getNum();
     }
+    int id;
 
     @NotNull
     @Size(min = 5)
@@ -64,7 +66,7 @@ public class UserDto extends RepresentationModel<UserDto> {
             authorities = new Authorities();
             authorities.setId(1);
         }
-        User user = new User(0,firstName,lastName,email,adresse,numTel,dateNaissance,password,authorities);
+        User user = new User(id,firstName,lastName,email,adresse,numTel,dateNaissance,password,authorities,null);
         return user;
     }
 }

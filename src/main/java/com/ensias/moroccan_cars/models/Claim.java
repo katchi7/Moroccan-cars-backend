@@ -1,11 +1,17 @@
 package com.ensias.moroccan_cars.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "claim")
 public class Claim {
@@ -21,7 +27,7 @@ public class Claim {
     private Date date;
     @Column(name = "claim_treatement_date")
     private Date treatmentDate;
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "claim_user")
     private User user;
 }
