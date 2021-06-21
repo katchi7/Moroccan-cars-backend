@@ -39,7 +39,6 @@ public class RentController {
     public HttpEntity<RentRequestDto> createRenRequest(@Valid @RequestBody RentRequestDto rentRequest , Errors errors) throws ParseException {
         if(errors.hasErrors()){ throw new RequestRejectedException("Not a valid body");}
         rentRequest.setDate(new Date());
-        if(rentRequest.validDates()) throw new RequestRejectedException("Dates are nor valid");
         log.info(rentRequest);
         rentRequest.setUser(new UserDto(userService.getCurrentUser()));
         Status status = new Status();

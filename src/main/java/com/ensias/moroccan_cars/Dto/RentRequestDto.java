@@ -6,12 +6,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 @Data
 @Log4j2
@@ -39,10 +48,7 @@ public class RentRequestDto {
 
     private Status status;
 
-    public boolean validDates() throws ParseException {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        return dateStart.after(df.parse(df.format(date))) && dateEnd.after(dateStart);
-    }
+
 
     public RentRequest asRentRequest(){
         VehiculeDto vehicule = new VehiculeDto();
@@ -51,10 +57,15 @@ public class RentRequestDto {
     }
 
     public void setDateStart(String date) throws ParseException {
-        this.dateStart = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd").withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT")));
+        long millis = df.parseMillis(date);
+        this.dateStart = new Date(millis);
+
     }
 
     public void setDateEnd(String dateEnd) throws ParseException {
-        this.dateEnd = new SimpleDateFormat("yyyy-MM-dd").parse(dateEnd);
+        DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd").withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT")));
+        long millis = df.parseMillis(dateEnd);
+        this.dateEnd = new Date(millis);
     }
 }
