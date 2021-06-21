@@ -63,6 +63,7 @@ public class RentController {
 
     @PutMapping("/rent-requests/{id}")
     public HttpEntity<RentRequest> treatRequest(@PathVariable("id") int request_id,@RequestParam("status") int status_id){
+        log.info("request_id : "+request_id,"status : "+status_id);
         rentService.treatRentRequest(request_id,status_id);
         return null;
     }
