@@ -128,6 +128,10 @@ public class RentService {
         return request;
     }
 
+    public List<Status> getAllStatus(){
+        return rentRequestRepo.findAllStatus();
+    }
+
     public List<Rent> getAllRents(){
         return rentRepository.findAll();
     }

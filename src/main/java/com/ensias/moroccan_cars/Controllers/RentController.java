@@ -77,6 +77,12 @@ public class RentController {
         return ResponseEntity.ok(rentDtos);
     }
 
+    @GetMapping("/status")
+    public HttpEntity<List<Status>> getAllStatus(){
+        return ResponseEntity.ok(rentService.getAllStatus());
+
+    }
+
     @ExceptionHandler(RequestRejectedException.class)
     public HttpEntity<String> RequestRejectedExceptionHandler(RequestRejectedException e){
         return ResponseEntity.badRequest().body(e.getMessage());

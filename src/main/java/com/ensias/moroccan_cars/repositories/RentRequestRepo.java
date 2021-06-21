@@ -27,4 +27,6 @@ public interface RentRequestRepo extends CrudRepository<RentRequest, Integer> {
 
     @Query("select r.vehicule from RentRequest as r where r = ?1 ")
     Vehicule findVehiculeByRequest(RentRequest request);
+    @Query("SELECT s from Status as s")
+    List<Status> findAllStatus();
 }
