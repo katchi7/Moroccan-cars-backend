@@ -70,4 +70,19 @@ public class RentRequestDto {
         long millis = df.parseMillis(dateEnd);
         this.dateEnd = new Date(millis);
     }
+
+    public String getDate() {
+        SimpleDateFormat df =new SimpleDateFormat("dd/MM/yyyy : hh:mm");
+        return df.format(date);
+    }
+
+    public String getDateStart() {
+        SimpleDateFormat df =new SimpleDateFormat("dd/MM/yyyy");
+        return df.format(dateStart);
+    }
+
+    public String getDateEnd() {
+        SimpleDateFormat df =new SimpleDateFormat("dd/MM/yyyy");
+        return df.format(dateEnd);
+    }
 }
