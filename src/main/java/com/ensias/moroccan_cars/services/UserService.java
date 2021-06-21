@@ -69,7 +69,7 @@ public class UserService implements UserDetailsService {
         int authority = 0;
         if(u.getAuthority() != null) authority = u.getAuthority().getId();
         log.info("Authority id : " + authority);
-        return userRepository.findUsersByValues(u.getFirstName(),u.getLastName(),u.getEmail(),authority);
+        return userRepository.findUsersByValues(authority);
     }
     public List<UserDto> findAllUsers(){
 

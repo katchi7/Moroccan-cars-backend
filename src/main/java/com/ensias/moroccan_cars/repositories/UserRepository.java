@@ -14,8 +14,9 @@ public interface UserRepository extends CrudRepository<User,Integer> {
     User findUserById(int id);
     User findUserByEmail(String email);
 
-    @Query("SELECT u from User AS u WHERE ((u.firstName like concat('%',?1,'%') or u.lastName like concat('%',?2,'%') or u.email like concat('%',?3,'%')) and (u.authority.id = ?4 or ?4 = 0))")
-    List<User> findUsersByValues(String firstName,String lastName,String email, int authority);
+    //@Query("SELECT u from User AS u WHERE ((u.firstName like concat('%',?1,'%') or u.firstName is NULL or u.lastName like concat('%',?2,'%') or u.lastName is NULL or u.email like concat('%',?3,'%') or u.email is NULL) and (u.authority.id = ?4 or ?4 = 0))")
+    @Query("SELECT u from User AS u WHERE u.authority.id = ?1 or ?1 = 0")
+    List<User> findUsersByValues( int authority);
 
     @Override
     List<User> findAll();
