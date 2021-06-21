@@ -79,7 +79,7 @@ public class AuthController {
 
     }
 
-    @GetMapping("/user/{id}")
+    @PostMapping("/user/{id}")
     public HttpEntity<UserDto> getUserById(@PathVariable("id") int id){
         User u = userService.getUserById(id);
         if(u != null){
@@ -88,8 +88,9 @@ public class AuthController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/users")
-    public HttpEntity<List<UserDto>> getUsers(@RequestBody UserDto userDto){
+    @PostMapping ("/users")
+    public HttpEntity<List<UserDto>> getUsers(@RequestBody(required = false) UserDto userDto){
+
         logger.info(userDto.toString());
         List<UserDto> userDtos = new ArrayList<>();
         List<User> users = userService.findUsers(userDto.User());
@@ -98,6 +99,10 @@ public class AuthController {
         }
 
         return ResponseEntity.ok().body(userDtos);
+    }
+    @GetMapping("/users")
+    public HttpEntity<List<UserDto>> getAllUsers(){
+        return ResponseEntity.ok(userService.findAllUsers());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)

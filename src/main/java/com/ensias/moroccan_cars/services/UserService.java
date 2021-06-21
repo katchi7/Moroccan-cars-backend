@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Log4j2
@@ -69,5 +70,14 @@ public class UserService implements UserDetailsService {
         if(u.getAuthority() != null) authority = u.getAuthority().getId();
         log.info("Authority id : " + authority);
         return userRepository.findUsersByValues(u.getFirstName(),u.getLastName(),u.getEmail(),authority);
+    }
+    public List<UserDto> findAllUsers(){
+
+        List<UserDto> userDtos = new ArrayList<>();
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            userDtos.add(new UserDto(user));
+        }
+        return userDtos;
     }
 }
