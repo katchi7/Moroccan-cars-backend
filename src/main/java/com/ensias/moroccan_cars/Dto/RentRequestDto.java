@@ -30,7 +30,7 @@ public class RentRequestDto {
 
 
     public RentRequestDto(RentRequest rentRequest){
-        this(rentRequest.getId(),rentRequest.getDate(),rentRequest.getDateStart(),rentRequest.getDateEnd(),new UserDto(rentRequest.getUser()), rentRequest.getVehicule().getId(),rentRequest.getStatus());
+        this(rentRequest.getId(),rentRequest.getDate(),rentRequest.getDateStart(),rentRequest.getDateEnd(),new UserDto(rentRequest.getUser()), rentRequest.getVehicule().getId(),new VehiculeDto(rentRequest.getVehicule()),rentRequest.getStatus());
     }
 
     private int id;
@@ -45,6 +45,8 @@ public class RentRequestDto {
 
     @Min(1)
     private int vehicule_id;
+
+    private VehiculeDto vehicule;
 
     private Status status;
 
