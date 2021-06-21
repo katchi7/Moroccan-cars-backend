@@ -54,7 +54,11 @@ public class UserDto extends RepresentationModel<UserDto> {
     private Authorities authorities;
 
     public void setDateNaissance(String dateNaissance) throws ParseException {
-        this.dateNaissance = new SimpleDateFormat("yyyy-MM-dd").parse(dateNaissance);
+        try {
+            this.dateNaissance = new SimpleDateFormat("yyyy-MM-dd").parse(dateNaissance);
+        }
+        catch (NullPointerException ignore){}
+
     }
 
     public String getDateNaissance()  {
