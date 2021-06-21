@@ -62,7 +62,11 @@ public class UserDto extends RepresentationModel<UserDto> {
     }
 
     public String getDateNaissance()  {
+        try {
             return new SimpleDateFormat("yyyy-MM-dd").format(dateNaissance);
+        }
+        catch (NullPointerException ignore){}
+        return null;
     }
 
     public User User(){
