@@ -1,21 +1,23 @@
 package com.ensias.moroccan_cars.services;
 
 import com.ensias.moroccan_cars.Controllers.CarsController;
+import com.ensias.moroccan_cars.Dto.VehiculeDto;
 import com.ensias.moroccan_cars.Dto.VehiculeFilter;
 import com.ensias.moroccan_cars.models.Image;
 import com.ensias.moroccan_cars.models.Vehicule;
 import com.ensias.moroccan_cars.repositories.ImageRepository;
 import com.ensias.moroccan_cars.repositories.VehiculeRepository;
 import lombok.extern.log4j.Log4j2;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -114,5 +116,30 @@ public class VehiculeService {
     }
     public Resource findImage(int image_id){
         return storageService.loadResource(image_id);
+    }
+
+    public List<VehiculeDto> getDisponible(String dateStart, String dateEnd){
+        DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd").withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT")));
+        long millisStart = df.parseMillis(dateStart);
+        long millisEnd = df.parseMillis(dateEnd);
+
+        List<VehiculeRepository.Count> countRentMapList = vehiculeRepository.findNbRentedVehicule(new Date(millisStart),new Date(millisEnd));
+        Map<Integer, Integer> countRent = new HashMap<>();
+
+
+
+        for (VehiculeRepository.Count count : countRentMapList ){
+            countRent.put(count.getId(),count.getNb());
+        }
+
+
+        List<Vehicule> vehicules = vehiculeRepository.findAll();
+        List<VehiculeDto> vehiculeDtos = new ArrayList<>();
+        for (Vehicule vehicule : vehicules) {
+            int rented = (countRent.get(vehicule.getId())==null)?-1:countRent.get(vehicule.getId());
+            if(rented < vehicule.getQuantity()) vehiculeDtos.add(new VehiculeDto(vehicule));
+        }
+
+        return vehiculeDtos;
     }
 }

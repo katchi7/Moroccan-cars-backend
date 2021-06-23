@@ -5,7 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.SqlResultSetMapping;
+import java.sql.ResultSet;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface VehiculeRepository extends CrudRepository<Vehicule,Integer> {
@@ -37,4 +41,12 @@ public interface VehiculeRepository extends CrudRepository<Vehicule,Integer> {
     @Query(value = "DELETE FROM vehicule WHERE vehicule_id = ?1",nativeQuery = true)
 
     void deleteById(int id);
+
+    @Query(value = "SELECT rent_vehicule as id,Count(rent_id) as nb FROM moroccan_cars.rent where (rent_date_start between ?1 and ?2) or (rent_date_end between ?1 and ?2) GROUP BY rent_vehicule",nativeQuery = true)
+    List<Count> findNbRentedVehicule(Date dateStart, Date dateEnd);
+
+    public static interface Count{
+        int getId();
+        int getNb();
+    }
 }

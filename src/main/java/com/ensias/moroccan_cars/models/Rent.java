@@ -21,7 +21,7 @@ public class Rent {
     @Column(name = "rent_date_start")
     private Date dateStart;
     @Column(name = "rent_date_end")
-    private Date DateEnd;
+    private Date dateEnd;
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "rent_user")
     private User user;

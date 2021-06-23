@@ -7,7 +7,6 @@ import com.ensias.moroccan_cars.models.Vehicule;
 import com.ensias.moroccan_cars.services.VehiculeService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -42,15 +41,21 @@ public class CarsController {
     }
 
     @GetMapping("")
-    public HttpEntity<List<VehiculeDto>> getVehicules(){
+    public HttpEntity<List<VehiculeDto>> getVehicules(@RequestParam(value = "dateStart",defaultValue = "") String dateStart,@RequestParam(value = "dateEnd",defaultValue = "") String dateEnd){
 
-        log.info("No body");
-        List<VehiculeDto> vehiculeDtos = new ArrayList<>();
-        List<Vehicule> vehicules = vehiculeService.getAllVehicules();
-        for (Vehicule vehicule : vehicules) {
-            VehiculeDto vehiculeDto = new VehiculeDto(vehicule);
-            vehiculeDto.add(linkTo(methodOn(CarsController.class).getVehiculeById(vehiculeDto.getId())).withSelfRel());
-            vehiculeDtos.add(vehiculeDto);
+        List<VehiculeDto> vehiculeDtos ;
+        if(dateEnd.trim().length()==0 ||  dateStart.trim().length()==0 ) {
+            log.info("No body");
+            vehiculeDtos = new ArrayList<>();
+            List<Vehicule> vehicules = vehiculeService.getAllVehicules();
+            for (Vehicule vehicule : vehicules) {
+                VehiculeDto vehiculeDto = new VehiculeDto(vehicule);
+                vehiculeDto.add(linkTo(methodOn(CarsController.class).getVehiculeById(vehiculeDto.getId())).withSelfRel());
+                vehiculeDtos.add(vehiculeDto);
+            }
+        }
+        else{
+            vehiculeDtos = vehiculeService.getDisponible(dateStart,dateEnd);
         }
         return ResponseEntity.ok().body(vehiculeDtos);
 
